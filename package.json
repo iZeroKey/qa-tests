@@ -1,0 +1,31 @@
+{
+  "name": "qa-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node helpers/run-setup.mjs",
+    "test": "pnpm test:unit && pnpm test:integration:without-ocr",
+    "test:unit": "vitest run unit",
+    "test:integration": "pnpm setup && vitest run integration",
+    "test:integration:without-ocr": "pnpm setup && vitest run integration -t \"^(?!.*OCR con imagen)\"",
+    "test:watch": "vitest",
+    "test:system": "playwright test system",
+    "test:acceptance": "playwright test acceptance",
+    "test:system-and-acceptance": "pnpm test:system && pnpm test:acceptance",
+    "playwright:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/luxon": "^3.7.6",
+    "@types/node": "^25.0.0",
+    "@types/supertest": "^7.2.0",
+    "@vitest/ui": "4.1.12",
+    "dotenv": "^18.0.9",
+    "drizzle-orm": "^0.45.4",
+    "luxon": "^3.7.2",
+    "supertest": "^7.2.2",
+    "typescript": "^6.0.0",
+    "vitest": "^4.1.0",
+    "zod": "^4.6.7"
+  }
+}

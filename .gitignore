@@ -1,0 +1,35 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Resultados y reportes generados
+test-results/
+playwright-report/
+blob-report/
+coverage/
+*.html
+
+# Logs y salidas temporales
+*.log
+pw-*.txt
+vitest-*.txt
+ocr*.txt
+vf.txt
+debug_ocr_out.txt
+html.meta.json.gz
+
+# Imágenes y artefactos de depuración
+bg.png
+debug-approve.png
+*.zip
+
+# Variables de entorno locales
+.env
+.env.*
+!.env.example
+
+# Archivos de sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
