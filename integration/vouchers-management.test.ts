@@ -34,6 +34,7 @@ async function createVoucher(amount = "75") {
 }
 
 describe("gestión de vouchers", () => {
+  // CP-I18
   it("envía un voucher con evidencia y lo lista", async () => {
     const operationId = uniqueOperationId("EVIDENCE");
     const response = await request
@@ -52,6 +53,7 @@ describe("gestión de vouchers", () => {
     expect(list.body.data.some((voucher: { operationId: string }) => voucher.operationId === operationId)).toBe(true);
   });
 
+  // CP-I19
   it("verifica duplicados, procesa, actualiza y elimina vouchers", async () => {
     const voucher = await createVoucher();
     const exists = await request

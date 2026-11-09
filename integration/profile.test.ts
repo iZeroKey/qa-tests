@@ -10,6 +10,7 @@ beforeAll(async () => {
 });
 
 describe("perfil", () => {
+  // CP-I06
   it("admin consulta su perfil y el cliente no accede a auditoría", async () => {
     const profile = await request.get("/api/v1/users/me").set(authHeader(adminToken));
     expect(profile.status).toBe(200);
@@ -19,6 +20,7 @@ describe("perfil", () => {
     expect(clientAudit.status).toBe(403);
   });
 
+  // CP-I07
   it("sube y elimina el avatar del usuario autenticado", async () => {
     const upload = await request
       .patch("/api/v1/users/me/avatar")

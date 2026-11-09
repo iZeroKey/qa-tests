@@ -12,11 +12,13 @@ import {
 } from "@/lib/navigation";
 
 describe("navigation helpers", () => {
+  // CP-U53
   it("calcula profundidad y clave de ruta", () => {
     expect(getRouteDepth("/users/requests")).toBe(2);
     expect(getRouteKey({ pathname: "/loans" })).toBe("/loans");
   });
 
+  // CP-U54
   it("valida el estado de navegación sin confiar en datos inválidos", () => {
     expect(getAppBackTarget(null)).toBeNull();
     expect(getAppBackTarget({ appBackTarget: "/loans" })).toBe("/loans");
@@ -25,6 +27,7 @@ describe("navigation helpers", () => {
     expect(getCameFromHome({ cameFromHome: "true" })).toBe(false);
   });
 
+  // CP-U55
   it("resuelve destinos de regreso por ruta, estado y home", () => {
     expect(getBackTargetPath("/requests")).toBe("/users");
     expect(getBackTargetPath("/profile", { appBackTarget: "/loans" })).toBe("/loans");
@@ -33,6 +36,7 @@ describe("navigation helpers", () => {
     expect(getPopBackTargetPath("/profile")).toBeNull();
   });
 
+  // CP-U56
   it("decide cuándo reemplazar navegación móvil", () => {
     expect(shouldReplaceSectionNavigation("/home", "/home", true)).toBe(false);
     expect(shouldReplaceSectionNavigation("/home", "/loans", false)).toBe(false);
@@ -41,6 +45,7 @@ describe("navigation helpers", () => {
     expect(shouldReplaceSectionNavigation("/loans", "/home", true)).toBe(true);
   });
 
+  // CP-U57
   it("construye el estado de navegación móvil", () => {
     expect(getSectionNavigationState("/home", "/loans", false)).toBeUndefined();
     expect(getSectionNavigationState("/home", "/home", true)).toBeUndefined();

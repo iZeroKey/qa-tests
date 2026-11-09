@@ -6,10 +6,12 @@ import {
 } from "../../../abc_inversiones_api/src/utils/public-code.util.js";
 
 describe("formatPublicCode", () => {
+  // CP-U36
   it("formatea codigo con prefijo y padding", () => {
     expect(formatPublicCode("loan", 1)).toBe("PR-00001");
     expect(formatPublicCode("client", 42)).toBe("CL-00042");
   });
+  // CP-U37
   it("rechaza valores fuera de rango", () => {
     expect(() => formatPublicCode("loan", 0)).toThrow();
     expect(() => formatPublicCode("loan", 100000)).toThrow();
@@ -17,10 +19,12 @@ describe("formatPublicCode", () => {
 });
 
 describe("parsePublicCodeNumber", () => {
+  // CP-U38
   it("extrae numero del codigo", () => {
     expect(parsePublicCodeNumber("PR-00001")).toBe(1);
     expect(parsePublicCodeNumber("CL-00042", "client")).toBe(42);
   });
+  // CP-U39
   it("devuelve 0 si no coincide", () => {
     expect(parsePublicCodeNumber(null)).toBe(0);
     expect(parsePublicCodeNumber("INVALID")).toBe(0);
@@ -29,6 +33,7 @@ describe("parsePublicCodeNumber", () => {
 });
 
 describe("publicCodeKindForRole", () => {
+  // CP-U40
   it("mapea rol a kind", () => {
     expect(publicCodeKindForRole("client")).toBe("client");
     expect(publicCodeKindForRole("investor")).toBe("investor");

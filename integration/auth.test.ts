@@ -8,6 +8,7 @@ beforeAll(async () => {
 });
 
 describe("autenticación", () => {
+  // CP-I03
   it("inicia sesión con credenciales válidas y devuelve el rol", async () => {
     const response = await request.post("/api/v1/auth/login").send({ email: seededEmails.admin, password: "password123" });
     expect(response.status).toBe(200);
@@ -15,6 +16,7 @@ describe("autenticación", () => {
     expect(response.body.data.user.role).toBe("admin");
   });
 
+  // CP-I04
   it("rechaza credenciales inválidas, refresh, registro y cambio de contraseña", async () => {
     const invalidLogin = await request.post("/api/v1/auth/login").send({ email: seededEmails.admin, password: "wrong" });
     expect([400, 401]).toContain(invalidLogin.status);
@@ -48,6 +50,7 @@ describe("autenticación", () => {
     expect(wrongPassword.status).toBe(401);
   });
 
+  // CP-I05
   it("rechaza perfiles sin token y cierra una sesión independiente", async () => {
     const unauthenticated = await request.get("/api/v1/users/me");
     expect(unauthenticated.status).toBe(401);

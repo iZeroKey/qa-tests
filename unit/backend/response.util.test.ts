@@ -3,6 +3,7 @@ import { z } from "zod";
 import { formatZodError } from "../../../abc_inversiones_api/src/utils/response.util.js";
 
 describe("formatZodError", () => {
+  // CP-U41
   it("formatea issues con path y message", () => {
     const schema = z.object({ email: z.string().email() });
     const result = schema.safeParse({ email: "bad" });

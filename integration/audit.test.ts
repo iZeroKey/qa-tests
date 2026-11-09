@@ -13,6 +13,7 @@ beforeAll(async () => {
 });
 
 describe("auditoría", () => {
+  // CP-I23
   it("lista auditoría general y por usuario con el préstamo creado", async () => {
     const all = await request.get("/api/v1/audit-logs").set(authHeader(adminToken));
     expect(all.status).toBe(200);

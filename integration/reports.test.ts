@@ -21,6 +21,7 @@ beforeAll(async () => {
 });
 
 describe("reportes", () => {
+  // CP-I26
   it("actualiza el estado de cuenta después de registrar un pago", async () => {
     const before = await request.get("/api/v1/reports/statement").set(authHeader(clientToken));
     expect(before.status).toBe(200);
@@ -39,6 +40,7 @@ describe("reportes", () => {
     expect(after.body.data.summary.paymentCount).toBe(before.body.data.summary.paymentCount + 1);
   });
 
+  // CP-I24
   it("consulta estado de cuenta, portafolio y dashboard", async () => {
     const statement = await request.get("/api/v1/reports/statement").set(authHeader(clientToken));
     expect(statement.status).toBe(200);

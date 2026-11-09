@@ -15,6 +15,7 @@ beforeAll(async () => {
 });
 
 describe("notificaciones", () => {
+  // CP-I25
   it("genera una notificación al enviar un préstamo", async () => {
     const list = await request
       .get("/api/v1/notifications")
@@ -29,6 +30,7 @@ describe("notificaciones", () => {
     expect(JSON.parse(notification.data)).toMatchObject({ loanId });
   });
 
+  // CP-I22
   it("lista y marca notificaciones", async () => {
     const list = await request.get("/api/v1/notifications").set(authHeader(clientToken));
     expect(list.status).toBe(200);

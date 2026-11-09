@@ -3,11 +3,13 @@ import { createDefaultLoanForm } from "@/features/loans/loan-form";
 import { buildWebSocketUrl } from "@/lib/realtime";
 
 describe("realtime y formulario de préstamos", () => {
+  // CP-U58
   it("convierte URLs HTTP a WebSocket y elimina rutas sobrantes", () => {
     expect(buildWebSocketUrl("https://api.example.com/api/v1?x=1#hash")).toBe("wss://api.example.com/ws");
     expect(buildWebSocketUrl("http://localhost:3000")).toBe("ws://localhost:3000/ws");
   });
 
+  // CP-U59
   it("crea un formulario con valores iniciales válidos", () => {
     const form = createDefaultLoanForm();
     expect(form).toMatchObject({

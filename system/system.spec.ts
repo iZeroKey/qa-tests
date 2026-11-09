@@ -16,6 +16,7 @@ test.describe.configure({ mode: "serial" });
 
 const loanName = `Préstamo sistema ${Date.now()}`;
 
+// CP-S01
 test("CP-S01: administrador completa el ciclo de un préstamo", async ({ page }) => {
   await loginAdmin(page);
   await createLoanThroughUi(page, loanName);
@@ -26,6 +27,7 @@ test("CP-S01: administrador completa el ciclo de un préstamo", async ({ page })
   await expect(page.getByText(/Pagado|Saldo/i).first()).toBeVisible();
 });
 
+// CP-S02
 test("CP-S02: cliente consulta su préstamo y envía un voucher", async ({ page }) => {
   await loginClient(page);
   await page.goto("/#/loans");
@@ -33,12 +35,14 @@ test("CP-S02: cliente consulta su préstamo y envía un voucher", async ({ page 
   await submitVoucherThroughUi(page);
 });
 
+// CP-S03
 test("CP-S03: inversionista y administrador aprueban el voucher en orden", async ({ page }) => {
   await approveVoucherAsInvestorThenAdmin(page, loanName);
   await expect(page.getByText("Administración")).toBeVisible();
   await expect(page).toHaveURL(/#\/loans$/);
 });
 
+// CP-S04
 test("CP-S04: cada rol visualiza su módulo permitido", async ({ page }) => {
   await loginClient(page);
   await page.goto("/#/loans");
@@ -50,6 +54,7 @@ test("CP-S04: cada rol visualiza su módulo permitido", async ({ page }) => {
   await expect(page.getByText("Usuarios")).toHaveCount(0);
 });
 
+// CP-S05
 test("CP-S05: la aplicación se adapta al viewport móvil", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
@@ -57,6 +62,7 @@ test("CP-S05: la aplicación se adapta al viewport móvil", async ({ page }) => 
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
+// CP-S06
 test("CP-S06: el cliente puede enviar un voucher con imagen aunque el OCR falle", async ({ page }) => {
   await loginClient(page);
   await page.goto("/#/loans");
@@ -64,6 +70,7 @@ test("CP-S06: el cliente puede enviar un voucher con imagen aunque el OCR falle"
   await attachImageToVoucherThroughUi(page, "fixtures/voucher-sample.jpg");
 });
 
+// CP-S07
 test("CP-S07: credenciales inválidas mantienen al usuario en login", async ({ page }) => {
   await page.goto("/");
   await page.locator("#email").fill("admin@abc.com");
@@ -73,6 +80,7 @@ test("CP-S07: credenciales inválidas mantienen al usuario en login", async ({ p
   await expect(page.getByText(/credenciales|Error del servidor/i).first()).toBeVisible();
 });
 
+// CP-S08
 test("CP-S08: formulario de login vacío no inicia sesión", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Iniciar sesión" }).click();
@@ -80,6 +88,7 @@ test("CP-S08: formulario de login vacío no inicia sesión", async ({ page }) =>
   await expect(page.locator("#email")).toBeVisible();
 });
 
+// CP-S09
 test("CP-S09: usuario autenticado puede cerrar sesión", async ({ page }) => {
   await loginAdmin(page);
   await page.getByTitle("Cerrar sesión").first().click();
@@ -87,6 +96,7 @@ test("CP-S09: usuario autenticado puede cerrar sesión", async ({ page }) => {
   await expect(page.locator("#email")).toBeVisible();
 });
 
+// CP-S10
 test("CP-S10: administrador navega por sus módulos principales", async ({ page }) => {
   await loginAdmin(page);
   for (const [path, heading] of [
@@ -101,6 +111,7 @@ test("CP-S10: administrador navega por sus módulos principales", async ({ page 
   }
 });
 
+// CP-S11
 test("CP-S11: administrador consulta reportes financieros", async ({ page }) => {
   await loginAdmin(page);
   await page.goto("/#/home");
@@ -108,6 +119,7 @@ test("CP-S11: administrador consulta reportes financieros", async ({ page }) => 
   await expect(page.getByText(/Capital|Cartera|Vouchers|Cobrado/i).first()).toBeVisible();
 });
 
+// CP-S12
 test("CP-S12: usuario consulta y marca sus notificaciones", async ({ page }) => {
   await loginClient(page);
   await page.goto("/#/notifications");
@@ -119,6 +131,7 @@ test("CP-S12: usuario consulta y marca sus notificaciones", async ({ page }) => 
   }
 });
 
+// CP-S13
 test("CP-S13: acceso directo a usuarios permanece restringido para el inversionista", async ({ page }) => {
   await loginInvestor(page);
   await page.goto("/#/users");
@@ -126,6 +139,7 @@ test("CP-S13: acceso directo a usuarios permanece restringido para el inversioni
   await expect(page.getByText("Acceso restringido")).toBeVisible();
 });
 
+// CP-S14
 test("CP-S14: módulos principales no generan desbordamiento en móvil", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await loginAdmin(page);

@@ -32,6 +32,7 @@ async function createPayment(amount = "250") {
 }
 
 describe("gestión de pagos", () => {
+  // CP-I15
   it("registra y lista pagos del préstamo", async () => {
     const payment = await createPayment();
     expect(payment).toMatchObject({ loanId, amount: "250.00" });
@@ -41,6 +42,7 @@ describe("gestión de pagos", () => {
     expect(history.body.data.some((item: { id: string }) => item.id === payment.id)).toBe(true);
   });
 
+  // CP-I16
   it("actualiza y elimina un pago", async () => {
     const payment = await createPayment("50");
     const update = await request
@@ -55,6 +57,7 @@ describe("gestión de pagos", () => {
     expect(remove.body.data.payment.status).toBe("reversed");
   });
 
+  // CP-I17
   it("rechaza un pago incompleto", async () => {
     const response = await request.post("/api/v1/payments").set(authHeader(adminToken)).send({ loanId });
     expect(response.status).toBeGreaterThanOrEqual(400);

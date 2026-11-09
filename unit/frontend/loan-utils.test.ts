@@ -35,6 +35,7 @@ const installment = (number: number, status: string, paidAmount = 0): Installmen
 });
 
 describe("loan-utils", () => {
+  // CP-U48
   it("normaliza números y porcentajes", () => {
     expect(toNumber(undefined)).toBe(0);
     expect(toNumber("10.50")).toBe(10.5);
@@ -44,12 +45,14 @@ describe("loan-utils", () => {
     expect(clampPercent(Number.NaN)).toBe(0);
   });
 
+  // CP-U49
   it("calcula pagos, progreso y saldo sin valores negativos", () => {
     expect(getLoanProgress(loan)).toBeCloseTo(20.8333, 3);
     expect(getRemainingDebt(loan)).toBe(950);
     expect(getRemainingDebt({ ...loan, totalPaid: "2000" })).toBe(0);
   });
 
+  // CP-U50
   it("detecta estados de cuotas y préstamo", () => {
     expect(getInstallmentDisplayStatus(installment(1, "pending", 50))).toBe("partial");
     expect(getInstallmentDisplayStatus(installment(1, "paid", 300))).toBe("paid");
@@ -58,6 +61,7 @@ describe("loan-utils", () => {
     expect(getStatusGroup("pending_admin_review")).toBe("pending");
   });
 
+  // CP-U51
   it("elige cuotas visibles y la próxima cuota", () => {
     const installments = [
       installment(3, "pending"),
@@ -72,6 +76,7 @@ describe("loan-utils", () => {
     expect(getNextInstallment(installments)?.installmentNumber).toBe(2);
   });
 
+  // CP-U52
   it("crea texto de búsqueda con códigos, nombres y montos", () => {
     const text = createLoanSearchText(loan);
     expect(text).toContain("pr-00001");

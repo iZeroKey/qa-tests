@@ -8,6 +8,7 @@ beforeAll(async () => {
 });
 
 describe("gestión de usuarios", () => {
+  // CP-I08
   it("lista usuarios paginados", async () => {
     const response = await request.get("/api/v1/users?page=1&limit=5").set(authHeader(adminToken));
     expect(response.status).toBe(200);
@@ -15,6 +16,7 @@ describe("gestión de usuarios", () => {
     expect(response.body.meta).toHaveProperty("pagination");
   });
 
+  // CP-I09
   it("crea, consulta, actualiza y elimina un usuario", async () => {
     const create = await request
       .post("/api/v1/users")

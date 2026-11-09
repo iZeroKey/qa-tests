@@ -8,11 +8,13 @@ beforeAll(async () => {
 });
 
 describe("OCR de vouchers", () => {
+  // CP-I20
   it("analizar voucher sin evidencia responde 400", async () => {
     const response = await request.post("/api/v1/payment-vouchers/analyze").set(authHeader(clientToken));
     expect(response.status).toBe(400);
   });
 
+  // CP-I21
   it("OCR con imagen: analizar voucher con imagen real", async () => {
     const response = await request
       .post("/api/v1/payment-vouchers/analyze")

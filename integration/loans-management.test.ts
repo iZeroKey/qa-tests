@@ -23,12 +23,14 @@ beforeAll(async () => {
 });
 
 describe("gestión de préstamos", () => {
+  // CP-I11
   it("admin consulta el préstamo creado y aprobado", async () => {
     const response = await request.get(`/api/v1/loans/${loanId}`).set(authHeader(adminToken));
     expect(response.status).toBe(200);
     expect(response.body.data).toMatchObject({ id: loanId, status: "active" });
   });
 
+  // CP-I12
   it("lista préstamos, resumen, cuotas, bundle y transacciones", async () => {
     const list = await request.get("/api/v1/loans").set(authHeader(clientToken));
     expect(list.status).toBe(200);
@@ -51,6 +53,7 @@ describe("gestión de préstamos", () => {
     expect(Array.isArray(transactions.body.data)).toBe(true);
   });
 
+  // CP-I13
   it("actualiza un préstamo y consulta el resumen administrativo", async () => {
     const update = await request
       .patch(`/api/v1/loans/${loanId}`)
@@ -64,6 +67,7 @@ describe("gestión de préstamos", () => {
     expect(summary.body.data.some((loan: { id: string }) => loan.id === loanId)).toBe(true);
   });
 
+  // CP-I14
   it("rechaza y elimina préstamos independientes", async () => {
     const rejected = await createTestLoan(adminToken, clientId);
     const reject = await request

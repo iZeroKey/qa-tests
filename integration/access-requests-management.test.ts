@@ -8,6 +8,7 @@ beforeAll(async () => {
 });
 
 describe("solicitudes de acceso", () => {
+  // CP-I10
   it("crea, lista, consulta y rechaza una solicitud", async () => {
     const create = await request.post("/api/v1/access-requests").send({
       email: uniqueEmail("request"),

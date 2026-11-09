@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { request } from "../helpers/integration.js";
 
 describe("salud de la API", () => {
+  // CP-I01
   it("GET /api/v1/health devuelve la estructura estándar", async () => {
     const response = await request.get("/api/v1/health");
     expect(response.status).toBe(200);
@@ -12,6 +13,7 @@ describe("salud de la API", () => {
     expect(response.headers["x-content-type-options"]).toBe("nosniff");
   });
 
+  // CP-I02
   it("GET /health y rutas inexistentes responden correctamente", async () => {
     const root = await request.get("/health");
     expect(root.status).toBe(200);

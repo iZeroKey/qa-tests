@@ -34,6 +34,7 @@ const form: UserFormState = {
 const target: ManagedUser = { id: "user-2", role: "client", active: true };
 
 describe("users utils", () => {
+  // CP-U60
   it("normaliza formularios de usuario respetando permisos", () => {
     expect(buildUserPayload(form, { canUpdateAdministrativeFields: true, canUpdateActive: true })).toEqual({
       firstName: "Ana",
@@ -50,6 +51,7 @@ describe("users utils", () => {
     expect(buildUserPayload(form, { canUpdateAdministrativeFields: false, canUpdateActive: false }).email).toBeUndefined();
   });
 
+  // CP-U61
   it("formatea y normaliza teléfono, rol y búsqueda", () => {
     expect(formatPhoneNumber("+51 987-654-3210")).toBe("519 876 543");
     expect(parsePhoneDisplay("+51 987 654 321")).toBe("987654321");
@@ -58,6 +60,7 @@ describe("users utils", () => {
     expect(displayPersonName({ firstName: "Ana", lastName: "Pérez" })).toBe("Ana Pérez");
   });
 
+  // CP-U62
   it("aplica permisos de administración sin permitir editar al dueño", () => {
     const admin = { id: "admin-1", role: "admin" };
     expect(canManageUser(admin, target)).toBe(true);
@@ -70,6 +73,7 @@ describe("users utils", () => {
     expect(canLinkAuthAccount(admin, { ...target, authUserId: "auth-1" })).toBe(false);
   });
 
+  // CP-U63
   it("envía la revisión de una solicitud con el payload correcto", async () => {
     const fetchWithAuth = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ success: true, data: { id: "request-1" } }), { status: 200 }),
