@@ -1,3 +1,4 @@
+// Carga variables de entorno desde ../abc_inversiones_api/.env antes de ejecutar Vitest.
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";

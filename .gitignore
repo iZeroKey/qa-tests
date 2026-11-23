@@ -3,11 +3,13 @@ node_modules/
 .pnpm-store/
 
 # Resultados y reportes generados
+reports/
 test-results/
 playwright-report/
 blob-report/
 coverage/
 *.html
+*.tsbuildinfo
 
 # Logs y salidas temporales
 *.log

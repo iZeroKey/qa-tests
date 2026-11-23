@@ -1,11 +1,11 @@
-import { execSync } from "child_process";
-import path from "path";
-import { fileURLToPath } from "url";
+// Comprueba conectividad y usuarios base en PostgreSQL mediante SELECT (sin cambios DDL).
+import { verifySeededUsersExist, getDbDeps } from "./db-dml.ts";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const apiDir = path.resolve(__dirname, "..", "..", "abc_inversiones_api");
-
-console.log("Preparando base de datos de prueba...");
-execSync("pnpm app:reset --confirm", { cwd: apiDir, stdio: "inherit" });
-execSync("pnpm app:setup", { cwd: apiDir, stdio: "inherit" });
-console.log("Base de datos lista.");
+console.log("Verificando usuarios base en BD mediante DML/SELECT (sin modificar esquema)...");
+try {
+  const rows = await verifySeededUsersExist();
+  console.log(`Usuarios base verificados (${rows.length}): ${rows.map((r) => `${r.email}[${r.role}]`).join(", ")}`);
+} finally {
+  const { queryClient } = await getDbDeps();
+  await queryClient.end({ timeout: 5 }).catch(() => {});
+}

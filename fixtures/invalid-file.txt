@@ -1,0 +1,1 @@
+not an image - qa test fixture

@@ -1,11 +1,12 @@
+// Cliente HTTP (supertest en memoria o contra QA_API_URL en vivo) y utilidades para pruebas de integración y UI.
 import supertest from "supertest";
-import { app } from "../../abc_inversiones_api/src/app.js";
-import { db } from "../../abc_inversiones_api/src/config/db.js";
-import { supabaseAdmin } from "../../abc_inversiones_api/src/config/supabase.js";
-import { users } from "../../abc_inversiones_api/src/db/schema/users.js";
-import { eq } from "drizzle-orm";
+import { getUserRowByEmail, TestCleanupTracker } from "./db-dml.js";
 
-export const request = supertest(app);
+const liveApiUrl = process.env.QA_API_URL?.trim();
+export const request = liveApiUrl
+  ? supertest(liveApiUrl)
+  : supertest((await import("../../abc_inversiones_api/src/app.js")).app);
+
 export const TEST_PASSWORD = "password123";
 
 export const seededEmails = {
@@ -16,18 +17,25 @@ export const seededEmails = {
 
 export const authHeader = (token: string) => ({ Authorization: `Bearer ${token}` });
 
-export const loginAs = async (email: string, password = TEST_PASSWORD): Promise<string> => {
+export const loginFull = async (email: string, password = TEST_PASSWORD) => {
   const res = await request.post("/api/v1/auth/login").send({ email, password });
   if (res.status !== 200) {
     throw new Error(`No se pudo iniciar sesión para ${email}: ${res.status} ${res.text}`);
   }
-  return res.body.data.session.access_token as string;
+  return {
+    accessToken: res.body.data.session.access_token as string,
+    refreshToken: res.body.data.session.refresh_token as string,
+    user: res.body.data.user as { id: string; email: string; role: string; isOwner: boolean },
+  };
+};
+
+export const loginAs = async (email: string, password = TEST_PASSWORD): Promise<string> => {
+  const res = await loginFull(email, password);
+  return res.accessToken;
 };
 
 export const getUserByEmail = async (email: string) => {
-  const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
-  if (!user) throw new Error(`No existe el usuario sembrado ${email}`);
-  return user;
+  return getUserRowByEmail(email);
 };
 
 export const uniqueEmail = (prefix: string): string =>
@@ -38,7 +46,12 @@ export const uniqueOperationId = (prefix: string): string =>
     .replace(/[^A-Z0-9]/gi, "")
     .toUpperCase();
 
-export async function createTestLoan(adminToken: string, clientId: string) {
+export async function createTestLoan(
+  adminToken: string,
+  clientId: string,
+  overrides: Record<string, unknown> = {},
+  tracker?: TestCleanupTracker,
+) {
   const res = await request
     .post("/api/v1/loans")
     .set(authHeader(adminToken))
@@ -49,6 +62,7 @@ export async function createTestLoan(adminToken: string, clientId: string) {
       installmentsCount: 4,
       frequency: "monthly",
       startDate: "2026-01-01T00:00:00.000Z",
+      ...overrides,
     });
 
   if (res.status !== 201) {
@@ -57,5 +71,6 @@ export async function createTestLoan(adminToken: string, clientId: string) {
 
   const loan = res.body.data?.loan ?? res.body.data;
   if (!loan?.id) throw new Error("La API no devolvió el ID del préstamo de prueba");
-  return loan as { id: string };
+  tracker?.trackLoan(loan.id as string);
+  return loan as { id: string; status: string; publicCode: string; totalDebt: string; name: string };
 }

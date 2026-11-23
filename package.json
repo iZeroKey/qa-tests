@@ -4,14 +4,16 @@
   "type": "module",
   "scripts": {
     "setup": "node helpers/run-setup.mjs",
-    "test": "pnpm test:unit && pnpm test:integration:without-ocr",
+    "supervisor": "node helpers/api-supervisor.mjs",
+    "test": "node helpers/run-all-qa.mjs",
+    "test:all": "node helpers/run-all-qa.mjs",
     "test:unit": "vitest run unit",
-    "test:integration": "pnpm setup && vitest run integration",
-    "test:integration:without-ocr": "pnpm setup && vitest run integration -t \"^(?!.*OCR con imagen)\"",
+    "test:integration": "vitest run integration",
     "test:watch": "vitest",
     "test:system": "playwright test system",
     "test:acceptance": "playwright test acceptance",
-    "test:system-and-acceptance": "pnpm test:system && pnpm test:acceptance",
+    "test:system-and-acceptance": "playwright test system && playwright test acceptance",
+    "test:e2e:headed": "playwright test --headed",
     "playwright:install": "playwright install chromium"
   },
   "devDependencies": {
