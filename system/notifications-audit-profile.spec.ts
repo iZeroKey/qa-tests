@@ -239,8 +239,15 @@ test("CP-S40: panel del préstamo muestra banner funcional de vouchers pendiente
   expect(vRes.status).toBe(201);
   tracker.trackVoucher(vRes.body.data.id);
 
-  // Defecto conocido (LoanDetailPanel.tsx:166-230, LoansPage.tsx:136): relatedData.vouchers llega vacío y omite el banner.
-  await expect(page.getByText("Vouchers por revisar", { exact: true })).toBeVisible({ timeout: 5000 });
+  await loginAs(page, investor.email, investor.password);
+  await page.goto("/#/loans");
+  await openLoan(page, loanName);
+
+  // Defecto conocido en línea base (LoanDetailPanel.tsx:166-230, LoansPage.tsx:136): relatedData.vouchers llega vacío y omite el banner.
+  await expect(page.getByText("Vouchers por revisar", { exact: true })).toBeVisible({ timeout: 10000 });
+  const reviewBtn = page.getByRole("button", { name: "Revisar", exact: true });
+  await expect(reviewBtn).toBeVisible();
+  await reviewBtn.click();
 });
 
 // CP-S46
